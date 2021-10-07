@@ -74,7 +74,11 @@ class App{
 
         indexPage
             .find('#restart')
-            .click(()=>this.switch('talent'));
+            .click(()=>{
+                this.switch('talent');
+                //不必再每次点击十连抽了
+                random(this);
+            });
 
         indexPage
             .find('#achievement')
@@ -203,50 +207,54 @@ class App{
             return $(`<li class="grade${grade}b">${name}（${description}）</li>`)
         };
 
+        function random(t){
+            talentPage.find('#random').hide();
+            const ul = talentPage.find('#talents');
+            t.#life.talentRandom()
+                .forEach(talent=>{
+                    const li = createTalent(talent);
+                    ul.append(li);
+                    li.click(()=>{
+                        if(li.hasClass('selected')) {
+                            li.removeClass('selected')
+                            t.#talentSelected.delete(talent);
+                            if(t.#talentSelected.size<3) {
+                                talentPage.find('#next').text('请选择3个')
+                            }
+                        } else {
+                            if(t.#talentSelected.size==3) {
+                                t.hint('只能选3个天赋');
+                                return;
+                            }
+
+                            const exclusive = t.#life.exclusive(
+                                Array.from(t.#talentSelected).map(({id})=>id),
+                                talent.id
+                            );
+                            if(exclusive != null) {
+                                for(const { name, id } of t.#talentSelected) {
+                                    if(id == exclusive) {
+                                        t.hint(`与已选择的天赋【${name}】冲突`);
+                                        return;
+                                    }
+                                }
+                                return;
+                            }
+                            li.addClass('selected');
+                            t.#talentSelected.add(talent);
+                            if(t.#talentSelected.size==3) {
+                                talentPage.find('#next').text('开始新人生')
+                            }
+                        }
+                    });
+                });
+            talentPage.find('#next').show()
+        }
+
         talentPage
             .find('#random')
-            .click(()=>{
-                talentPage.find('#random').hide();
-                const ul = talentPage.find('#talents');
-                this.#life.talentRandom()
-                    .forEach(talent=>{
-                        const li = createTalent(talent);
-                        ul.append(li);
-                        li.click(()=>{
-                            if(li.hasClass('selected')) {
-                                li.removeClass('selected')
-                                this.#talentSelected.delete(talent);
-                                if(this.#talentSelected.size<3) {
-                                    talentPage.find('#next').text('请选择3个')
-                                }
-                            } else {
-                                if(this.#talentSelected.size==3) {
-                                    this.hint('只能选3个天赋');
-                                    return;
-                                }
-
-                                const exclusive = this.#life.exclusive(
-                                    Array.from(this.#talentSelected).map(({id})=>id),
-                                    talent.id
-                                );
-                                if(exclusive != null) {
-                                    for(const { name, id } of this.#talentSelected) {
-                                        if(id == exclusive) {
-                                            this.hint(`与已选择的天赋【${name}】冲突`);
-                                            return;
-                                        }
-                                    }
-                                    return;
-                                }
-                                li.addClass('selected');
-                                this.#talentSelected.add(talent);
-                                if(this.#talentSelected.size==3) {
-                                    talentPage.find('#next').text('开始新人生')
-                                }
-                            }
-                        });
-                    });
-                talentPage.find('#next').show()
+            .click(() => {
+                random(this);
             });
 
         talentPage
