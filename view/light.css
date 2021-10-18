@@ -97,6 +97,17 @@ body {
   margin-right: 0.5rem;
 }
 
+#plugin {
+  position: fixed;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#plugin .iconfont {
+  margin-right: 0.5rem;
+}
+
 #next {
   display: none;
 }

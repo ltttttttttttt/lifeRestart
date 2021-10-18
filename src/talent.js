@@ -96,7 +96,7 @@ class Talent {
         return new Array(10)
             .fill(1).map((v, i)=>{
                 if(!i && include) return include;
-                let grade = randomGrade();
+                let grade = 3;//randomGrade();//todo 这里可以修改天赋级别
                 while(talentList[grade].length == 0) grade--;
                 const length = talentList[grade].length;
 
