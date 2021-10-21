@@ -401,11 +401,12 @@ class App {
                     return;
                 }
                 const contents = this.#life.restart({
+                    //四维属性初始化
                     CHR: groups.CHR.get(),
                     INT: groups.INT.get(),
                     STR: groups.STR.get(),
                     MNY: groups.MNY.get(),
-                    SPR: 5,
+                    SPR: 5,//快乐值初始化
                     TLT: Array.from(this.#talentSelected).map(({id}) => id),
                 });
                 this.switch('trajectory');
