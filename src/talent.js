@@ -3,6 +3,14 @@ import { checkCondition, extractMaxTriggers } from './functions/condition.js';
 import { getRate } from './functions/addition.js';
 
 class Talent {
+    //id唯一id
+    //name名称
+    //description详细内容
+    //grade等级,0白1蓝2紫3金
+    //exclusive[]冲突的id列表
+    //replacement//随机变成的天赋,可以设置变成的等级或id,也可以设置几率
+    //effect可以增加或减少的属性:RDM随机,CHR颜值,INT智力,STR体质,MNY家境,SPR快乐
+    //condition天赋生效条件,比如SPR<0就是快乐小于0时生效
     constructor() {}
 
     #talents;
