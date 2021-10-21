@@ -10,7 +10,7 @@ class App {
     #life;
     #pages;
     #currentPage;
-    #talentSelected = new Set();
+    #talentSelected = new Set();//存放已选择的天赋
     #totalMax = 20;
     #isEnd = false;
     #selectedExtendTalent = null;
