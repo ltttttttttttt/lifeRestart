@@ -273,6 +273,8 @@ class App {
                     return;
                 }
                 talentPage.find('#next').hide()
+                //计算附带天赋后的总天赋点
+                //todo 后续可以将开挂里的天赋削弱后放到天赋中,这个天赋点也可以通过开挂直接给满
                 this.#totalMax = 20 + this.#life.getTalentAllocationAddition(Array.from(this.#talentSelected).map(({id}) => id));
                 this.switch('property');
             })
