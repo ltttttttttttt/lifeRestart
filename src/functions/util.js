@@ -44,4 +44,12 @@ function listRandom(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
 
+function find(list, equals) {
+    list.forEach((b) => {
+        if (equals(b))
+            return b
+    })
+    return null
+}
+
 export { clone, max, min, sum, average, weightRandom, listRandom };

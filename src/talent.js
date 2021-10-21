@@ -66,7 +66,7 @@ class Talent {
         return null;
     }
 
-    talentRandom(include, {times = 0, achievement = 0} = {}) {
+    talentRandom(include, {times = 0, achievement = 0} = {}, pluginSelected) {
         const rate = { 1:100, 2:10, 3:1, };
         const rateAddition = { 1:1, 2:1, 3:1, };
         const timesRate = getRate('times', times);
@@ -102,14 +102,19 @@ class Talent {
         }
 
         return new Array(10)
-            .fill(1).map((v, i)=>{
-                if(!i && include) return include;
-                let grade = 3;//randomGrade();//todo 这里可以修改天赋级别
-                while(talentList[grade].length == 0) grade--;
+            .fill(1).map((v, i) => {
+                if (!i && include) return include;
+                var grade = randomGrade();//天赋级别(随机)
+                if (grade < 1 && find(pluginSelected, ({id}) => {
+                    id === 3
+                }) != null) {
+                    grade = 1;
+                }
+                while (talentList[grade].length == 0) grade--;
                 const length = talentList[grade].length;
 
-                const random = Math.floor(Math.random()*length) % length;
-                return talentList[grade].splice(random,1)[0];
+                const random = Math.floor(Math.random() * length) % length;
+                return talentList[grade].splice(random, 1)[0];
             });
     }
 

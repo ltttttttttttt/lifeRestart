@@ -17,6 +17,7 @@ class App {
     #hintTimeout;
     #specialthanks;
     #autoTrajectory;
+    #pluginSelected = new Set();//存放已选择的外挂
 
     async initial() {
         this.initPages();
@@ -218,7 +219,7 @@ class App {
         function random(t) {
             talentPage.find('#random').hide();
             const ul = talentPage.find('#talents');
-            t.#life.talentRandom()
+            t.#life.talentRandom(t.#pluginSelected)
                 .forEach(talent => {
                     const li = createTalent(talent);
                     ul.append(li);
@@ -274,8 +275,11 @@ class App {
                 }
                 talentPage.find('#next').hide()
                 //计算附带天赋后的总天赋点
-                //todo 后续可以将开挂里的天赋削弱后放到天赋中,这个天赋点也可以通过开挂直接给满
                 this.#totalMax = 20 + this.#life.getTalentAllocationAddition(Array.from(this.#talentSelected).map(({id}) => id));
+                if (find(this.#pluginSelected, ({id}) => {
+                    id === 8
+                }) != null)
+                    this.#totalMax = 40;
                 this.switch('property');
             })
 
@@ -373,6 +377,13 @@ class App {
             .find('#random')
             .click(() => {
                 let t = this.#totalMax;
+                if (t === 40) {
+                    groups.CHR.set(10);
+                    groups.INT.set(10);
+                    groups.STR.set(10);
+                    groups.MNY.set(10);
+                    return;
+                }
                 const arr = [10, 10, 10, 10];
                 while (t > 0) {
                     const sub = Math.round(Math.random() * (Math.min(t, 10) - 1)) + 1;
@@ -446,6 +457,7 @@ class App {
                     content.map(
                         ({type, description, grade, name, postEvent}) => {
                             //todo postEvent触发了什么事件?
+                            print(postEvent)
                             switch (type) {
                                 case 'TLT':
                                     return `天赋【${name}】发动：${description}`;
@@ -577,10 +589,22 @@ class App {
         </div>
         `);
 
+        pluginPage
+            .find(`#confirm`)
+            .click(() => {
+                this.switch('index');
+            });
+
         //todo 怎么去实现
         const plugins = [
-            {grade: "3", name: "金色符咒", description: "护身到95岁不会发生意外", id: 1},
-            {grade: "2", name: "仙侠迷", description: "向往仙侠小说", id: 2},
+            {grade: "3", name: "金色符咒", description: "95岁前不会死亡", id: 1},
+            {grade: "1", name: "仙侠迷", description: "向往仙侠小说", id: 2},
+            {grade: "2", name: "好运", description: "不会抽到白色天赋", id: 3},//
+            {grade: "3", name: "与人为善", description: "不与别人争斗(也许吧)", id: 4},
+            {grade: "3", name: "体质基因改造", description: "体质+1000", id: 5},
+            {grade: "3", name: "智力基因改造", description: "智力+1000", id: 6},
+            {grade: "3", name: "富二代", description: "家境+100", id: 7},
+            {grade: "3", name: "天之骄子", description: "满天赋", id: 8},//
         ];
 
         this.#pages = {
@@ -839,15 +863,17 @@ class App {
                 clear: () => {
                     this.#currentPage = 'plugin';
                     const talents = pluginPage.find('#talents');
+                    talents.empty()
                     plugins.forEach((talent) => {
                         const li = createTalent(talent);
                         talents.append(li);
                         li.click(() => {
                             if (li.hasClass('selected')) {
                                 li.removeClass('selected');
+                                this.#pluginSelected.remove(talent)
                             } else {
-                                //todo 怎么实现附加功能
                                 li.addClass('selected');
+                                this.#pluginSelected.add(talent)
                             }
                         });
                     });
