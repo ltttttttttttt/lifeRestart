@@ -445,6 +445,7 @@ class App {
                 const li = $(`<li><span>${age}岁：</span><span>${
                     content.map(
                         ({type, description, grade, name, postEvent}) => {
+                            //todo postEvent触发了什么事件?
                             switch (type) {
                                 case 'TLT':
                                     return `天赋【${name}】发动：${description}`;
