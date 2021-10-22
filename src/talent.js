@@ -1,4 +1,4 @@
-import { clone, weightRandom } from './functions/util.js';
+import {clone, weightRandom, listFind} from './functions/util.js';
 import { checkCondition, extractMaxTriggers } from './functions/condition.js';
 import { getRate } from './functions/addition.js';
 
@@ -105,9 +105,8 @@ class Talent {
             .fill(1).map((v, i) => {
                 if (!i && include) return include;
                 var grade = randomGrade();//天赋级别(随机)
-                //todo 这里有bug,只走了前面一个条件
-                if (grade < 1 && find(pluginSelected, ({id}) => {
-                    id === 3;
+                if (grade < 1 && listFind(pluginSelected, ({id}) => {
+                    return id === 3;
                 }) != null) {
                     grade = 1;
                 }

@@ -1,6 +1,7 @@
 import {summary} from './functions/summary.js';
 import {getRate, getGrade} from './functions/addition.js';
 import Life from './life.js';
+import {listFind} from "./functions/util.js";
 
 class App {
     constructor() {
@@ -276,8 +277,8 @@ class App {
                 talentPage.find('#next').hide()
                 //计算附带天赋后的总天赋点
                 this.#totalMax = 20 + this.#life.getTalentAllocationAddition(Array.from(this.#talentSelected).map(({id}) => id));
-                if (find(this.#pluginSelected, ({id}) => {
-                    id === 8
+                if (listFind(this.#pluginSelected, ({id}) => {
+                    return id === 8
                 }) != null)
                     this.#totalMax = 40;
                 this.switch('property');
@@ -412,32 +413,32 @@ class App {
                     return;
                 }
                 var initSPR = 5;
-                if (find(this.#pluginSelected, ({id}) => {
-                    id === 9;
+                if (listFind(this.#pluginSelected, ({id}) => {
+                    return id === 9;
                 }) != null) {
                     initSPR = 100;
                 }
                 var pluginMNY = 0;
-                if (find(this.#pluginSelected, ({id}) => {
-                    id === 7;
+                if (listFind(this.#pluginSelected, ({id}) => {
+                    return id === 7;
                 }) != null) {
                     pluginMNY = 100;
                 }
                 var pluginSTR = 0;
-                if (find(this.#pluginSelected, ({id}) => {
-                    id === 5;
+                if (listFind(this.#pluginSelected, ({id}) => {
+                    return id === 5;
                 }) != null) {
                     pluginSTR = 1000;
                 }
                 var pluginINT = 0;
-                if (find(this.#pluginSelected, ({id}) => {
-                    id === 6;
+                if (listFind(this.#pluginSelected, ({id}) => {
+                    return id === 6;
                 }) != null) {
                     pluginINT = 1000;
                 }
                 var pluginCHR = 0;
-                if (find(this.#pluginSelected, ({id}) => {
-                    id === 10;
+                if (listFind(this.#pluginSelected, ({id}) => {
+                    return id === 10;
                 }) != null) {
                     pluginCHR = 100;
                 }
@@ -486,7 +487,7 @@ class App {
                 const li = $(`<li><span>${age}岁：</span><span>${
                     content.map(
                         ({type, description, grade, name, postEvent}) => {
-                            //todo postEvent触发了什么事件?
+                            //todo 可以处理事件
                             console.log(postEvent)
                             switch (type) {
                                 case 'TLT':
@@ -628,7 +629,7 @@ class App {
         //todo 怎么去实现
         const plugins = [
             {grade: "3", name: "金色符咒", description: "感觉人生已经走向了巅峰", id: 1},
-            {grade: "1", name: "仙侠迷", description: "向往仙侠", id: 2},
+            {grade: "3", name: "仙侠迷", description: "向往仙侠", id: 2},
             {grade: "2", name: "好运", description: "不会抽到白色天赋", id: 3},//
             {grade: "3", name: "与人为善", description: "不与别人争斗(也许吧)", id: 4},
             {grade: "3", name: "体质基因改造", description: "体质++", id: 5},//
@@ -898,6 +899,11 @@ class App {
                     talents.empty()
                     plugins.forEach((talent) => {
                         const li = createTalent(talent);
+                        if (listFind(this.#pluginSelected, ({id}) => {
+                            return id === talent.id
+                        }) != null) {
+                            li.addClass('selected');
+                        }
                         talents.append(li);
                         li.click(() => {
                             if (li.hasClass('selected')) {
