@@ -411,13 +411,43 @@ class App {
                     this.hint(`你多使用了${total() - this.#totalMax}属性点`);
                     return;
                 }
+                var initSPR = 5;
+                if (find(this.#pluginSelected, ({id}) => {
+                    id === 9;
+                }) != null) {
+                    initSPR = 100;
+                }
+                var pluginMNY = 0;
+                if (find(this.#pluginSelected, ({id}) => {
+                    id === 7;
+                }) != null) {
+                    pluginMNY = 100;
+                }
+                var pluginSTR = 0;
+                if (find(this.#pluginSelected, ({id}) => {
+                    id === 5;
+                }) != null) {
+                    pluginSTR = 1000;
+                }
+                var pluginINT = 0;
+                if (find(this.#pluginSelected, ({id}) => {
+                    id === 6;
+                }) != null) {
+                    pluginINT = 1000;
+                }
+                var pluginCHR = 0;
+                if (find(this.#pluginSelected, ({id}) => {
+                    id === 10;
+                }) != null) {
+                    pluginCHR = 100;
+                }
                 const contents = this.#life.restart({
                     //四维属性初始化
-                    CHR: groups.CHR.get(),
-                    INT: groups.INT.get(),
-                    STR: groups.STR.get(),
-                    MNY: groups.MNY.get(),
-                    SPR: 5,//快乐值初始化
+                    CHR: groups.CHR.get() + pluginCHR,
+                    INT: groups.INT.get() + pluginINT,
+                    STR: groups.STR.get() + pluginSTR,
+                    MNY: groups.MNY.get() + pluginMNY,
+                    SPR: initSPR,//快乐值初始化
                     TLT: Array.from(this.#talentSelected).map(({id}) => id),
                 });
                 this.switch('trajectory');
@@ -457,7 +487,7 @@ class App {
                     content.map(
                         ({type, description, grade, name, postEvent}) => {
                             //todo postEvent触发了什么事件?
-                            print(postEvent)
+                            console.log(postEvent)
                             switch (type) {
                                 case 'TLT':
                                     return `天赋【${name}】发动：${description}`;
@@ -597,14 +627,16 @@ class App {
 
         //todo 怎么去实现
         const plugins = [
-            {grade: "3", name: "金色符咒", description: "95岁前不会死亡", id: 1},
-            {grade: "1", name: "仙侠迷", description: "向往仙侠小说", id: 2},
+            {grade: "3", name: "金色符咒", description: "感觉人生已经走向了巅峰", id: 1},
+            {grade: "1", name: "仙侠迷", description: "向往仙侠", id: 2},
             {grade: "2", name: "好运", description: "不会抽到白色天赋", id: 3},//
             {grade: "3", name: "与人为善", description: "不与别人争斗(也许吧)", id: 4},
-            {grade: "3", name: "体质基因改造", description: "体质+1000", id: 5},
-            {grade: "3", name: "智力基因改造", description: "智力+1000", id: 6},
-            {grade: "3", name: "富二代", description: "家境+100", id: 7},
-            {grade: "3", name: "天之骄子", description: "满天赋", id: 8},//
+            {grade: "3", name: "体质基因改造", description: "体质++", id: 5},//
+            {grade: "3", name: "智力基因改造", description: "智力++", id: 6},//
+            {grade: "3", name: "富二代", description: "花不完的钱", id: 7},//
+            {grade: "3", name: "天才", description: "天赋异禀", id: 8},//
+            {grade: "1", name: "巨乐观", description: "每天都很开心", id: 9},//
+            {grade: "2", name: "混血儿", description: "颜值爆表", id: 10},//
         ];
 
         this.#pages = {
@@ -870,7 +902,7 @@ class App {
                         li.click(() => {
                             if (li.hasClass('selected')) {
                                 li.removeClass('selected');
-                                this.#pluginSelected.remove(talent)
+                                this.#pluginSelected.delete(talent)
                             } else {
                                 li.addClass('selected');
                                 this.#pluginSelected.add(talent)
