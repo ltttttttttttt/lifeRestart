@@ -48,7 +48,7 @@ class Event {
             for(const [cond, next] of branch)
                 if(checkCondition(property, cond))
                     return { effect, next, description };
-        return { effect, postEvent, description };
+        return {effect, postEvent, description, eventId};
     }
 
 }

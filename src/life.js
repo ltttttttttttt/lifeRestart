@@ -106,16 +106,20 @@ class Life {
         return contents;
     }
 
-    doEvent(eventId) {
-        const { effect, next, description, postEvent } = this.#event.do(eventId, this.#property);
+    doEvent(id) {
+        var eventId = id;
+        if (eventId === undefined)
+            eventId = 10294;
+        const {effect, next, description, postEvent} = this.#event.do(eventId, this.#property);
         this.#property.change(this.#property.TYPES.EVT, eventId);
         this.#property.effect(effect);
         const content = {
             type: this.#property.TYPES.EVT,
             description,
             postEvent,
+            eventId
         }
-        if(next) return [content, this.doEvent(next)].flat();
+        if (next) return [content, this.doEvent(next)].flat();
         return [content];
     }
 
@@ -159,6 +163,10 @@ class Life {
 
     getLastRecord() {
         return this.#property.getLastRecord();
+    }
+
+    getProperty(){
+        return this.#property;
     }
 
     exclusive(talents, exclusive) {

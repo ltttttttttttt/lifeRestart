@@ -303,6 +303,10 @@ class Property {
         return this.get(this.TYPES.LIF) < 1;
     }
 
+    setNotEnd() {
+        this.set(this.TYPES.LIF, 1);
+    }
+
     ageNext() {
         this.change(this.TYPES.AGE, 1);
         const age = this.get(this.TYPES.AGE);
