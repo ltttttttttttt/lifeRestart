@@ -483,17 +483,28 @@ class App {
             .click(() => {
                 if (this.#isEnd) return;
                 const trajectory = this.#life.next();
-                const {age, content, isEnd} = trajectory;
+                const {age, content, end} = trajectory;
+                var isEnd = end;
+                const plugin1 = listFind(this.#pluginSelected, ({id}) => {
+                    return id === 1;
+                }) != null;
                 const li = $(`<li><span>${age}岁：</span><span>${
                     content.map(
                         ({type, description, grade, name, postEvent}) => {
-                            //todo 可以处理事件
-                            console.log(postEvent)
+                            //可以处理年龄事件
+                            console.log(type + "  " + description + "  " + grade + "  " + name + "  " + postEvent + "  " + age + "  " + content + "  " + isEnd)
                             switch (type) {
                                 case 'TLT':
                                     return `天赋【${name}】发动：${description}`;
-                                case 'EVT':
-                                    return description + (postEvent ? `<br>${postEvent}` : '');
+                                case 'EVT': {
+                                    //todo 有bug
+                                    var text = description + (postEvent ? `<br>${postEvent}` : '');
+                                    if (isEnd && content.length === 2 && content.getItem(1).description === description && age < 95 && plugin1) {//金色锦囊效果
+                                        text += "但一道金光闪过，你发现你自己并没有死。";
+                                        isEnd = false;
+                                    }
+                                    return text
+                                }
                             }
                         }
                     ).join('<br>')
@@ -628,7 +639,7 @@ class App {
 
         //todo 怎么去实现
         const plugins = [
-            {grade: "3", name: "金色符咒", description: "感觉人生已经走向了巅峰", id: 1},
+            {grade: "3", name: "金色符咒", description: "得道高僧赠物,用处不明", id: 1},
             {grade: "3", name: "仙侠迷", description: "向往仙侠", id: 2},
             {grade: "2", name: "好运", description: "不会抽到白色天赋", id: 3},//
             {grade: "3", name: "与人为善", description: "不与别人争斗(也许吧)", id: 4},
