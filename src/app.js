@@ -498,7 +498,6 @@ class App {
                     content.map(
                         ({type, description, grade, name, postEvent, eventId}) => {
                             //可以处理年龄事件
-                            console.log(type + "  " + description + "  " + grade + "  " + name + "  " + postEvent + "  " + age + "  " + content + "  " + eventId + "  " + end)
                             switch (type) {
                                 case 'TLT':
                                     return `天赋【${name}】发动：${description}`;
