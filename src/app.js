@@ -442,10 +442,16 @@ class App {
                 }) != null) {
                     pluginCHR = 100;
                 }
+                var myINT = groups.INT.get() + pluginINT;
+                if (myINT < 12 && listFind(this.#pluginSelected, ({id}) => {
+                    return id === 2;
+                }) != null) {
+                    myINT = 12;
+                }
                 const contents = this.#life.restart({
                     //四维属性初始化
                     CHR: groups.CHR.get() + pluginCHR,
-                    INT: groups.INT.get() + pluginINT,
+                    INT: myINT,
                     STR: groups.STR.get() + pluginSTR,
                     MNY: groups.MNY.get() + pluginMNY,
                     SPR: initSPR,//快乐值初始化
@@ -637,12 +643,12 @@ class App {
                 this.switch('index');
             });
 
-        //todo 怎么去实现
         const plugins = [
             {grade: "3", name: "金色符咒", description: "得道高僧赠物,用处不明", id: 1},//
-            {grade: "3", name: "仙侠迷", description: "向往仙侠", id: 2},
-            {grade: "2", name: "好运", description: "不会抽到白色天赋", id: 3},//
-            {grade: "3", name: "与人为善", description: "不与别人争斗(也许吧)", id: 4},
+            {grade: "3", name: "仙侠迷", description: "向往仙侠", id: 2},//
+            {grade: "2", name: "好运", description: "运气好", id: 3},//
+            {grade: "3", name: "超好运", description: "运气超好", id: 11},//
+            // {grade: "3", name: "与人为善", description: "不与别人争斗(也许吧)", id: 4},
             {grade: "3", name: "体质基因改造", description: "体质++", id: 5},//
             {grade: "3", name: "智力基因改造", description: "智力++", id: 6},//
             {grade: "3", name: "富二代", description: "花不完的钱", id: 7},//
