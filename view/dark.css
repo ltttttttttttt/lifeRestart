@@ -105,7 +105,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-#plugin .iconfont {
+#plugin .iconfontPlugin {
   margin-right: 0.5rem;
 }
 
@@ -151,6 +151,16 @@ body {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconfontPlugin {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url("images/icons/icon-72x72.png");
 }
 
 .sponsor,
